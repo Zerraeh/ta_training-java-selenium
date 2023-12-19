@@ -2,6 +2,7 @@ package MinsktransTests.utils;
 
 import MinsktransTests.driver.DriverSingleton;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,9 +18,13 @@ public class FindElementUtils {
         return webElements.size();
     }
 
-    public static WebElement getWebElement(By locator, WebDriver driver)
-    {
-        LoggingUtils.log("FindElementUtils in process, getWebElement");
-        return new WebDriverWait(driver, java.time.Duration.ofSeconds(10)).until(ExpectedConditions.presenceOfElementLocated(locator));
+    public static WebElement getWebElement(By locator, WebDriver driver) throws NoSuchElementException {
+        try {
+            LoggingUtils.log("FindElementUtils in process, getWebElement");
+            return new WebDriverWait(driver, java.time.Duration.ofSeconds(10)).until(ExpectedConditions.presenceOfElementLocated(locator));
+        } catch (Exception e) {
+            LoggingUtils.log("Exception has occurred. No element with this locator found: " + e.getMessage());
+        }
+        return null;
     }
 }
